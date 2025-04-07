@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSA Concepts in 30 Days</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f4f6f8, #e9ecef);
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      text-align: center;
+      color: #007bff;
+      font-size: 2.5em;
+      margin-bottom: 30px;
+      animation: fadeIn 1s ease-in;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .topic {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      margin: 15px 0;
+      padding: 20px;
+      cursor: pointer;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    .topic:hover {
+      transform: translateY(-5px);
+      background-color: #f0f8ff;
+    }
+    .title {
+      font-size: 1.4em;
+      color: #0056b3;
+    }
+    .card-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      width: 80%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+    .card.active {
+      transform: scale(1);
+    }
+    .card h2 {
+      color: #007bff;
+      margin-top: 0;
+    }
+    .card .close-btn {
+      float: right;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: #dc3545;
+    }
+    .subtopic {
+      margin: 10px 0;
+    }
+    .subtopic h3 {
+      color: #0056b3;
+      margin-bottom: 5px;
+    }
+    .diagram {
+      background: #f8f9fa;
+      border: 1px dashed #ccc;
+      padding: 10px;
+      margin: 10px 0;
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      h1 { font-size: 2em; }
+      .topic { padding: 15px; }
+      .title { font-size: 1.2em; }
+      .card { width: 90%; }
+    }
+    @media (max-width: 480px) {
+      body { padding: 10px; }
+      h1 { font-size: 1.5em; }
+      .topic { margin: 10px 0; }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📘 Learn DSA Concepts in 30 Days</h1>
+    <div id="topics"></div>
+    <div id="card-container" class="card-container">
+      <div id="card" class="card">
+        <span class="close-btn" onclick="closeCard()">×</span>
+        <div id="card-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const data = [
+      { 
+        day: 1, 
+        title: "What is DSA?", 
+        content: `
+          <h2>Day 1: What is DSA?</h2>
+          <p><strong>Overview:</strong> DSA (Data Structures and Algorithms) is the foundation of efficient programming, focusing on organizing data and designing solutions.</p>
+          <div class="subtopic">
+            <h3>Definition of Data Structures</h3>
+            <p>Ways to store and organize data for efficient access and modification (e.g., arrays, trees, graphs). Example: Storing a list of names for quick lookup.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Definition of Algorithms</h3>
+            <p>Step-by-step procedures to solve problems (e.g., sorting a list, finding a number). Example: Binary search to find an element in a sorted array.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Why DSA Matters</h3>
+            <p>Optimizes performance (speed, memory). Essential for coding interviews, software development, and competitive programming.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Types of Data Structures</h3>
+            <p>Primitive: int, char, float. Non-primitive: arrays, linked lists, stacks, queues, trees, graphs.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Types of Algorithms</h3>
+            <p>Brute Force, Greedy, Divide and Conquer, Dynamic Programming, Backtracking. Example: Divide and Conquer in Merge Sort.</p>
+          </div>
+          <p><strong>Key Points:</strong> DSA bridges raw data and usable solutions.</p>
+          <div class="diagram">[Diagram: Input → Data Structure → Algorithm → Output Flowchart]</div>
+        `
+      },
+      { 
+        day: 2, 
+        title: "Time & Space Complexity", 
+        content: `
+          <h2>Day 2: Time & Space Complexity</h2>
+          <p><strong>Overview:</strong> Measures efficiency of algorithms in terms of time (runtime) and space (memory).</p>
+          <div class="subtopic">
+            <h3>Time Complexity</h3>
+            <p>How runtime scales with input size (n). Notation: Big O (upper bound), Omega (lower bound), Theta (average). Examples: O(1) constant, O(n) linear, O(n²) quadratic.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Space Complexity</h3>
+            <p>Memory used by an algorithm (fixed + variable). Example: O(1) for a single variable, O(n) for an array of size n.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Big O Notation</h3>
+            <p>Simplifies analysis by focusing on worst-case growth. Common complexities: O(log n), O(n log n), O(2ⁿ).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Analysis Techniques</h3>
+            <p>Loops: O(n) per iteration. Recursion: Solve recurrence relations (e.g., T(n) = 2T(n/2) + n for Merge Sort).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Practical Examples</h3>
+            <p>Linear Search: O(n). Binary Search: O(log n).</p>
+          </div>
+          <p><strong>Key Points:</strong> Trade-off between time and space often exists.</p>
+          <div class="diagram">[Diagram: Graph of O(1), O(n), O(n²) growth rates]</div>
+        `
+      },
+      { 
+        day: 3, 
+        title: "Arrays - Basics", 
+        content: `
+          <h2>Day 3: Arrays - Basics</h2>
+          <p><strong>Overview:</strong> Arrays are fundamental, storing elements in contiguous memory.</p>
+          <div class="subtopic">
+            <h3>Structure</h3>
+            <p>Fixed-size, indexed (0 to n-1), same data type. Example: <code>int arr[5] = {10, 20, 30, 40, 50}</code>.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Operations</h3>
+            <p>Access: O(1) via index. Insert/Delete: O(n) due to shifting.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Advantages</h3>
+            <p>Fast lookups, cache-friendly (sequential memory).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Disadvantages</h3>
+            <p>Static size (fixed at creation), costly resizing.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Lookup tables, matrices, simple lists.</p>
+          </div>
+          <p><strong>Key Points:</strong> Arrays are simple but inflexible compared to dynamic structures.</p>
+          <div class="diagram">[Diagram: Array with indices and values]</div>
+        `
+      },
+      { 
+        day: 4, 
+        title: "Arrays - Problems", 
+        content: `
+          <h2>Day 4: Arrays - Problems</h2>
+          <p><strong>Overview:</strong> Solving common array-based problems builds practical skills.</p>
+          <div class="subtopic">
+            <h3>Finding Min/Max</h3>
+            <p>Linear scan: O(n). Example: Min in [3, 1, 4, 1] is 1.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Removing Duplicates</h3>
+            <p>Naive: O(n²) with nested loops. Hash Set: O(n) with extra O(n) space.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Reversing an Array</h3>
+            <p>Two-pointer method: O(n), swap from ends. Example: [1, 2, 3] → [3, 2, 1].</p>
+          </div>
+          <div class="subtopic">
+            <h3>Rotating an Array</h3>
+            <p>Shift elements k positions: O(n) time, O(1) space with reversal trick.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Sliding Window Problems</h3>
+            <p>Example: Max sum subarray of size k (O(n)).</p>
+          </div>
+          <p><strong>Key Points:</strong> Efficient solutions often use pointers or extra space.</p>
+          <div class="diagram">[Diagram: Two-pointer reversal process]</div>
+        `
+      },
+      { 
+        day: 5, 
+        title: "Strings - Basics", 
+        content: `
+          <h2>Day 5: Strings - Basics</h2>
+          <p><strong>Overview:</strong> Strings are sequences of characters, often treated as arrays.</p>
+          <div class="subtopic">
+            <h3>Structure</h3>
+            <p>Array-like: "Hello" = ['H', 'e', 'l', 'l', 'o']. Immutable in some languages (Java, Python).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Operations</h3>
+            <p>Length: O(1). Concatenation: O(n) in immutable cases.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Memory</h3>
+            <p>Contiguous, null-terminated in C (<code>\\0</code>).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Common Uses</h3>
+            <p>Text processing, parsing, validation.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Challenges</h3>
+            <p>Handling encoding (ASCII, Unicode).</p>
+          </div>
+          <p><strong>Key Points:</strong> Strings require careful manipulation due to immutability.</p>
+          <div class="diagram">[Diagram: String as array with indices]</div>
+        `
+      },
+      { 
+        day: 6, 
+        title: "Strings - Manipulation", 
+        content: `
+          <h2>Day 6: Strings - Manipulation</h2>
+          <p><strong>Overview:</strong> Advanced string operations for problem-solving.</p>
+          <div class="subtopic">
+            <h3>Reversing a String</h3>
+            <p>Two-pointer: O(n), "abc" → "cba".</p>
+          </div>
+          <div class="subtopic">
+            <h3>Palindrome Check</h3>
+            <p>Compare ends inward: O(n), "racecar" is palindrome.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Substring Search</h3>
+            <p>Naive: O(n*m). KMP Algorithm: O(n+m) using prefix table.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Anagram Check</h3>
+            <p>Sort both strings: O(n log n) or use frequency array: O(n).</p>
+          </div>
+          <div class="subtopic">
+            <h3>String Compression</h3>
+            <p>Example: "aabbb" → "a2b3", O(n).</p>
+          </div>
+          <p><strong>Key Points:</strong> Optimization is key for large strings.</p>
+          <div class="diagram">[Diagram: KMP prefix table creation]</div>
+        `
+      },
+      { 
+        day: 7, 
+        title: "Revision Day 1", 
+        content: `
+          <h2>Day 7: Revision Day 1</h2>
+          <p><strong>Overview:</strong> Consolidate Week 1 concepts.</p>
+          <div class="subtopic">
+            <h3>Review DSA Basics</h3>
+            <p>Definitions, importance.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Complexity Recap</h3>
+            <p>Practice calculating O(n), O(log n).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Array/String Practice</h3>
+            <p>Solve problems (e.g., reverse array, palindrome).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Dry Runs</h3>
+            <p>Step through algorithms manually.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Flashcards</h3>
+            <p>Key terms, complexities.</p>
+          </div>
+          <p><strong>Key Points:</strong> Focus on understanding, not memorization.</p>
+        `
+      },
+      { 
+        day: 8, 
+        title: "Searching - Linear & Binary", 
+        content: `
+          <h2>Day 8: Searching - Linear & Binary</h2>
+          <p><strong>Overview:</strong> Finding elements efficiently.</p>
+          <div class="subtopic">
+            <h3>Linear Search</h3>
+            <p>O(n), checks each element. Unsorted data, simple.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Binary Search</h3>
+            <p>O(log n), requires sorted data. Halves search space iteratively.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Implementation</h3>
+            <p>Iterative vs Recursive binary search.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Edge Cases</h3>
+            <p>Element not present, duplicates.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Databases, sorted lists.</p>
+          </div>
+          <p><strong>Key Points:</strong> Binary search is vastly superior for sorted data.</p>
+          <div class="diagram">[Diagram: Binary search halving process]</div>
+        `
+      },
+      { 
+        day: 9, 
+        title: "Sorting - Bubble, Selection, Insertion", 
+        content: `
+          <h2>Day 9: Sorting - Bubble, Selection, Insertion</h2>
+          <p><strong>Overview:</strong> Basic sorting algorithms for small datasets.</p>
+          <div class="subtopic">
+            <h3>Bubble Sort</h3>
+            <p>O(n²), swaps adjacent elements. Stable, simple.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Selection Sort</h3>
+            <p>O(n²), finds min/max each pass. Unstable, in-place.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Insertion Sort</h3>
+            <p>O(n²), builds sorted portion. Adaptive (faster on nearly sorted data).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Comparison</h3>
+            <p>Space: O(1) for all. Best case: Insertion O(n).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Use Cases</h3>
+            <p>Small arrays, educational purposes.</p>
+          </div>
+          <p><strong>Key Points:</strong> Inefficient for large data but easy to implement.</p>
+          <div class="diagram">[Diagram: Bubble sort swap steps]</div>
+        `
+      },
+      { 
+        day: 10, 
+        title: "Sorting - Merge & Quick", 
+        content: `
+          <h2>Day 10: Sorting - Merge & Quick</h2>
+          <p><strong>Overview:</strong> Advanced, efficient sorting methods.</p>
+          <div class="subtopic">
+            <h3>Merge Sort</h3>
+            <p>O(n log n), divide-and-conquer. Stable, O(n) extra space.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Quick Sort</h3>
+            <p>O(n log n) average, O(n²) worst. In-place, pivot-based.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Pivot Selection</h3>
+            <p>Random, median-of-three to avoid worst case.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Implementation</h3>
+            <p>Recursive for both.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Large datasets, library functions.</p>
+          </div>
+          <p><strong>Key Points:</strong> Merge is stable, Quick is faster in practice.</p>
+          <div class="diagram">[Diagram: Merge sort tree]</div>
+        `
+      },
+      { 
+        day: 11, 
+        title: "Recursion", 
+        content: `
+          <h2>Day 11: Recursion</h2>
+          <p><strong>Overview:</strong> Functions calling themselves to solve problems.</p>
+          <div class="subtopic">
+            <h3>Concept</h3>
+            <p>Base case + recursive case. Example: Factorial(4) = 4 * Factorial(3).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Stack Usage</h3>
+            <p>Call stack grows with each call. Risk: Stack overflow.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Types</h3>
+            <p>Tail recursion, head recursion.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Tree traversal, Fibonacci, Towers of Hanoi.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Optimization</h3>
+            <p>Memoization for repeated calls.</p>
+          </div>
+          <p><strong>Key Points:</strong> Elegant but memory-intensive.</p>
+          <div class="diagram">[Diagram: Recursion stack for factorial]</div>
+        `
+      },
+      { 
+        day: 12, 
+        title: "Math - GCD, LCM, Primes", 
+        content: `
+          <h2>Day 12: Math - GCD, LCM, Primes</h2>
+          <p><strong>Overview:</strong> Number theory basics for algorithms.</p>
+          <div class="subtopic">
+            <h3>GCD (Greatest Common Divisor)</h3>
+            <p>Euclid’s algorithm: O(log(min(a,b))). Example: GCD(48, 18) = 6.</p>
+          </div>
+          <div class="subtopic">
+            <h3>LCM (Least Common Multiple)</h3>
+            <p>LCM(a,b) = (a*b)/GCD(a,b).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Prime Numbers</h3>
+            <p>Sieve of Eratosthenes: O(n log log n). Trial division: O(√n).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Cryptography, modular arithmetic.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Modular Exponentiation</h3>
+            <p>Efficient power calculation: O(log n).</p>
+          </div>
+          <p><strong>Key Points:</strong> Essential for optimization problems.</p>
+          <div class="diagram">[Diagram: Sieve marking process]</div>
+        `
+      },
+      { 
+        day: 13, 
+        title: "Practice Day 2", 
+        content: `
+          <h2>Day 13: Practice Day 2</h2>
+          <p><strong>Overview:</strong> Apply Week 2 concepts.</p>
+          <div class="subtopic">
+            <h3>Searching</h3>
+            <p>Code binary search.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Sorting</h3>
+            <p>Implement merge sort.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Recursion</h3>
+            <p>Solve Fibonacci recursively.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Math</h3>
+            <p>Write GCD/LCM functions.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Dry Runs</h3>
+            <p>Trace steps manually.</p>
+          </div>
+          <p><strong>Key Points:</strong> Coding reinforces theory.</p>
+        `
+      },
+      { 
+        day: 14, 
+        title: "Revision Day 2", 
+        content: `
+          <h2>Day 14: Revision Day 2</h2>
+          <p><strong>Overview:</strong> Solidify Week 2 learning.</p>
+          <div class="subtopic">
+            <h3>Review Key Concepts</h3>
+            <p>Searching, sorting, recursion, math.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Problem Solving</h3>
+            <p>Sort array, find GCD.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Notes</h3>
+            <p>Summarize complexities, use cases.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Flashcards</h3>
+            <p>Algorithms vs complexities.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Self-Test</h3>
+            <p>Explain binary search aloud.</p>
+          </div>
+          <p><strong>Key Points:</strong> Active recall boosts retention.</p>
+        `
+      },
+      { 
+        day: 15, 
+        title: "Linked List - Intro", 
+        content: `
+          <h2>Day 15: Linked List - Intro</h2>
+          <p><strong>Overview:</strong> Dynamic data structure with nodes and pointers.</p>
+          <div class="subtopic">
+            <h3>Structure</h3>
+            <p>Node: data + next pointer (singly). Doubly: prev + next.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Types</h3>
+            <p>Singly, Doubly, Circular.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Operations</h3>
+            <p>Insert/Delete: O(1) if position known, O(n) otherwise. Access: O(n).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Advantages</h3>
+            <p>Dynamic size, easy insertion.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Disadvantages</h3>
+            <p>No random access, extra memory for pointers.</p>
+          </div>
+          <p><strong>Key Points:</strong> Flexible but slower for lookups.</p>
+          <div class="diagram">[Diagram: Singly linked list nodes]</div>
+        `
+      },
+      { 
+        day: 16, 
+        title: "Linked List Operations", 
+        content: `
+          <h2>Day 16: Linked List Operations</h2>
+          <p><strong>Overview:</strong> Manipulating linked lists efficiently.</p>
+          <div class="subtopic">
+            <h3>Traversal</h3>
+            <p>O(n), follow pointers.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Insertion</h3>
+            <p>Head, tail, middle: O(1) with pointer.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Deletion</h3>
+            <p>By value or position: O(n) to find.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Reversal</h3>
+            <p>Iterative (3 pointers) or recursive: O(n).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Cycle Detection</h3>
+            <p>Floyd’s Tortoise and Hare: O(n).</p>
+          </div>
+          <p><strong>Key Points:</strong> Pointer management is critical.</p>
+          <div class="diagram">[Diagram: Insertion at middle]</div>
+        `
+      },
+      { 
+        day: 17, 
+        title: "Stack", 
+        content: `
+          <h2>Day 17: Stack</h2>
+          <p><strong>Overview:</strong> LIFO (Last In, First Out) structure.</p>
+          <div class="subtopic">
+            <h3>Structure</h3>
+            <p>Array or linked list-based.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Operations</h3>
+            <p>Push: O(1). Pop: O(1). Peek: O(1).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Undo operations, expression evaluation.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Implementation</h3>
+            <p>Fixed-size array vs dynamic list.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Overflow/Underflow</h3>
+            <p>Check for full/empty states.</p>
+          </div>
+          <p><strong>Key Points:</strong> Simple, powerful for order-reversal tasks.</p>
+          <div class="diagram">[Diagram: Stack push/pop sequence]</div>
+        `
+      },
+      { 
+        day: 18, 
+        title: "Queue", 
+        content: `
+          <h2>Day 18: Queue</h2>
+          <p><strong>Overview:</strong> FIFO (First In, First Out) structure.</p>
+          <div class="subtopic">
+            <h3>Structure</h3>
+            <p>Array or linked list-based.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Operations</h3>
+            <p>Enqueue: O(1). Dequeue: O(1).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Types</h3>
+            <p>Circular Queue, avoids wasted space.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Task scheduling, BFS.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Implementation</h3>
+            <p>Front/rear pointers.</p>
+          </div>
+          <p><strong>Key Points:</strong> Ideal for ordered processing.</p>
+          <div class="diagram">[Diagram: Queue with front/rear]</div>
+        `
+      },
+      { 
+        day: 19, 
+        title: "Deque & Priority Queue", 
+        content: `
+          <h2>Day 19: Deque & Priority Queue</h2>
+          <p><strong>Overview:</strong> Advanced queue variants.</p>
+          <div class="subtopic">
+            <h3>Deque (Double-Ended Queue)</h3>
+            <p>Add/remove from both ends: O(1). Uses: Sliding window, palindrome checking.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Priority Queue</h3>
+            <p>Elements with priority, not order. Heap-based: O(log n) insert/remove.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Implementation</h3>
+            <p>Deque: Doubly linked list. PQ: Binary heap.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>PQ: Dijkstra’s algorithm, job scheduling.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Comparison</h3>
+            <p>Deque for flexibility, PQ for priority.</p>
+          </div>
+          <p><strong>Key Points:</strong> Specialized for specific needs.</p>
+          <div class="diagram">[Diagram: Min-Heap structure]</div>
+        `
+      },
+      { 
+        day: 20, 
+        title: "Use Cases", 
+        content: `
+          <h2>Day 20: Use Cases</h2>
+          <p><strong>Overview:</strong> Real-world applications of prior structures.</p>
+          <div class="subtopic">
+            <h3>Stack</h3>
+            <p>Browser history, recursion stack.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Queue</h3>
+            <p>Printer queues, BFS.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Linked List</h3>
+            <p>Music playlist, memory allocation.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Deque</h3>
+            <p>Undo-redo systems.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Priority Queue</h3>
+            <p>Event simulation, shortest path.</p>
+          </div>
+          <p><strong>Key Points:</strong> Match structure to problem requirements.</p>
+        `
+      },
+      { 
+        day: 21, 
+        title: "Revision Day 3", 
+        content: `
+          <h2>Day 21: Revision Day 3</h2>
+          <p><strong>Overview:</strong> Recap Week 3.</p>
+          <div class="subtopic">
+            <h3>Compare Structures</h3>
+            <p>Stack vs Queue, Linked List vs Array.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Practice Operations</h3>
+            <p>Stack push/pop, Queue enqueue/dequeue.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Notes</h3>
+            <p>Summarize differences, complexities.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Problems</h3>
+            <p>Reverse list, simulate stack.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Visualize</h3>
+            <p>Draw structures manually.</p>
+          </div>
+          <p><strong>Key Points:</strong> Understand trade-offs.</p>
+        `
+      },
+      { 
+        day: 22, 
+        title: "Trees - Intro", 
+        content: `
+          <h2>Day 22: Trees - Intro</h2>
+          <p><strong>Overview:</strong> Hierarchical data structures.</p>
+          <div class="subtopic">
+            <h3>Structure</h3>
+            <p>Root, nodes, leaves; max 2 children in binary.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Binary Search Tree (BST)</h3>
+            <p>Left < root < right. O(log n) search if balanced.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Types</h3>
+            <p>AVL, Red-Black (self-balancing).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Properties</h3>
+            <p>Height, depth, degree.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Databases, file systems.</p>
+          </div>
+          <p><strong>Key Points:</strong> Efficient for hierarchical data.</p>
+          <div class="diagram">[Diagram: BST example]</div>
+        `
+      },
+      { 
+        day: 23, 
+        title: "Tree Operations", 
+        content: `
+          <h2>Day 23: Tree Operations</h2>
+          <p><strong>Overview:</strong> Manipulating trees.</p>
+          <div class="subtopic">
+            <h3>Traversal</h3>
+            <p>Inorder (LNR), Preorder (NLR), Postorder (LRN): O(n).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Insertion</h3>
+            <p>BST: O(h), h = height.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Deletion</h3>
+            <p>Leaf, one child, two children cases: O(h).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Height Calculation</h3>
+            <p>Recursive: O(n).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Balancing</h3>
+            <p>AVL rotations if unbalanced.</p>
+          </div>
+          <p><strong>Key Points:</strong> Traversal order matters for output.</p>
+          <div class="diagram">[Diagram: Inorder traversal path]</div>
+        `
+      },
+      { 
+        day: 24, 
+        title: "Graphs - Basics", 
+        content: `
+          <h2>Day 24: Graphs - Basics</h2>
+          <p><strong>Overview:</strong> Nodes connected by edges.</p>
+          <div class="subtopic">
+            <h3>Structure</h3>
+            <p>Vertices (nodes), Edges (connections).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Types</h3>
+            <p>Directed/Undirected, Weighted/Unweighted.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Representation</h3>
+            <p>Adjacency Matrix: O(V²) space. Adjacency List: O(V+E).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Properties</h3>
+            <p>Degree, path, cycle.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Networks, maps.</p>
+          </div>
+          <p><strong>Key Points:</strong> Flexible but complex.</p>
+          <div class="diagram">[Diagram: Simple graph with edges]</div>
+        `
+      },
+      { 
+        day: 25, 
+        title: "BFS & DFS", 
+        content: `
+          <h2>Day 25: BFS & DFS</h2>
+          <p><strong>Overview:</strong> Graph traversal methods.</p>
+          <div class="subtopic">
+            <h3>BFS (Breadth-First Search)</h3>
+            <p>Level-order, uses queue: O(V+E). Shortest path in unweighted graphs.</p>
+          </div>
+          <div class="subtopic">
+            <h3>DFS (Depth-First Search)</h3>
+            <p>Deep exploration, uses stack/recursion: O(V+E). Cycle detection, topological sort.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Implementation</h3>
+            <p>Iterative (queue/stack) vs recursive.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Comparison</h3>
+            <p>BFS wider, DFS deeper.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>BFS: GPS, DFS: maze solving.</p>
+          </div>
+          <p><strong>Key Points:</strong> Choice depends on goal (e.g., shortest path vs connectivity).</p>
+          <div class="diagram">[Diagram: BFS vs DFS paths]</div>
+        `
+      },
+      { 
+        day: 26, 
+        title: "Hashing", 
+        content: `
+          <h2>Day 26: Hashing</h2>
+          <p><strong>Overview:</strong> Fast key-value storage.</p>
+          <div class="subtopic">
+            <h3>Concept</h3>
+            <p>Hash function maps keys to indices.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Operations</h3>
+            <p>Insert, Search, Delete: O(1) average.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Collisions</h3>
+            <p>Chaining (linked lists): O(n) worst. Open Addressing (probing): O(1) average.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Hash Functions</h3>
+            <p>Modulo, multiplication method.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Dictionaries, caching.</p>
+          </div>
+          <p><strong>Key Points:</strong> Speed vs collision trade-off.</p>
+          <div class="diagram">[Diagram: Hash table with collision]</div>
+        `
+      },
+      { 
+        day: 27, 
+        title: "Heaps", 
+        content: `
+          <h2>Day 27: Heaps</h2>
+          <p><strong>Overview:</strong> Specialized trees for priority.</p>
+          <div class="subtopic">
+            <h3>Structure</h3>
+            <p>Binary Heap: Complete tree, Min/Max.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Operations</h3>
+            <p>Insert: O(log n). Delete Min/Max: O(log n).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Implementation</h3>
+            <p>Array-based (parent at i, children at 2i+1, 2i+2).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Heapify</h3>
+            <p>Build heap: O(n).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Priority queues, heapsort.</p>
+          </div>
+          <p><strong>Key Points:</strong> Efficient for top-k problems.</p>
+          <div class="diagram">[Diagram: Max-Heap structure]</div>
+        `
+      },
+      { 
+        day: 28, 
+        title: "Tries", 
+        content: `
+          <h2>Day 28: Tries</h2>
+          <p><strong>Overview:</strong> Tree for string storage.</p>
+          <div class="subtopic">
+            <h3>Structure</h3>
+            <p>Nodes represent characters, paths form words.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Operations</h3>
+            <p>Insert, Search: O(m), m = string length.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Advantages</h3>
+            <p>Prefix-based search (e.g., autocomplete).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Space</h3>
+            <p>O(ALPHABET_SIZE * m * n), n = number of strings.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Applications</h3>
+            <p>Dictionaries, spell checkers.</p>
+          </div>
+          <p><strong>Key Points:</strong> Specialized for strings.</p>
+          <div class="diagram">[Diagram: Trie with "cat", "car"]</div>
+        `
+      },
+      { 
+        day: 29, 
+        title: "Final Revision", 
+        content: `
+          <h2>Day 29: Final Revision</h2>
+          <p><strong>Overview:</strong> Consolidate all concepts.</p>
+          <div class="subtopic">
+            <h3>Review Structures</h3>
+            <p>Arrays to Tries, complexities.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Algorithms</h3>
+            <p>Sorting, searching, traversal.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Problem Solving</h3>
+            <p>Mixed problems (e.g., BST insert, hash design).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Resources</h3>
+            <p>Videos, cheat sheets.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Self-Test</h3>
+            <p>Explain concepts aloud.</p>
+          </div>
+          <p><strong>Key Points:</strong> Tie everything together.</p>
+        `
+      },
+      { 
+        day: 30, 
+        title: "Cheat Sheet Day", 
+        content: `
+          <h2>Day 30: Cheat Sheet Day</h2>
+          <p><strong>Overview:</strong> Summarize DSA in one page.</p>
+          <div class="subtopic">
+            <h3>Big O Summary</h3>
+            <p>List complexities (e.g., Array access O(1), Quick Sort O(n log n)).</p>
+          </div>
+          <div class="subtopic">
+            <h3>Definitions</h3>
+            <p>Stack (LIFO), Queue (FIFO), etc.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Differences</h3>
+            <p>Array vs Linked List, BFS vs DFS.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Use Cases</h3>
+            <p>When to use each structure/algorithm.</p>
+          </div>
+          <div class="subtopic">
+            <h3>Visuals</h3>
+            <p>Small diagrams or tables.</p>
+          </div>
+          <p><strong>Key Points:</strong> Concise, quick reference.</p>
+          <div class="diagram">[Diagram: Sample cheat sheet layout]</div>
+        `
+      }
+    ];
+
+    const container = document.getElementById('topics');
+    const cardContainer = document.getElementById('card-container');
+    const card = document.getElementById('card');
+    const cardContent = document.getElementById('card-content');
+
+    data.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'topic';
+      div.innerHTML = `<div class="title">Day ${item.day}: ${item.title}</div>`;
+      div.addEventListener('click', () => {
+        cardContent.innerHTML = item.content;
+        cardContainer.style.display = 'flex';
+        setTimeout(() => card.classList.add('active'), 10); // Small delay for transition
+      });
+      container.appendChild(div);
+    });
+
+    function closeCard() {
+      card.classList.remove('active');
+      setTimeout(() => cardContainer.style.display = 'none', 300); // Match transition duration
+    }
+
+    // Close card when clicking outside
+    cardContainer.addEventListener('click', (e) => {
+      if (e.target === cardContainer) closeCard();
+    });
+  </script>
+</body>
+</html>
